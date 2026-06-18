@@ -1,5 +1,7 @@
 # noPulse
 
+<p align="left"><img src="logo.svg" alt="noPulse" width="96" height="96"></p>
+
 A small Chrome extension that strips tracking and advertising requests from a
 handful of Norwegian news sites while leaving the rest of the page — articles,
 video, images, layout — untouched.
@@ -94,3 +96,17 @@ Open DevTools on, say, `vg.no` and watch the Network tab while reloading.
 You should see requests to the blocked domains marked as failed with
 `net::ERR_BLOCKED_BY_CLIENT`, and the cookies listed under Application →
 Cookies should not contain any of the names in the block list.
+
+## Disclaimer
+
+This is a personal project, distributed as-is. The block list was built
+from observed behaviour at a specific point in time — publishers rotate
+hostnames and ad partners, so a rule that catches everything today may
+miss something tomorrow, or, less often, block something that has since
+been repurposed for functional use. If a covered site breaks, the first
+thing to try is widening the allowed set in `background.js` (the file is
+short and the lists are commented).
+
+## License
+
+[MIT](LICENSE). Use at your own risk; no warranty.
