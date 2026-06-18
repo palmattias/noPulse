@@ -17,14 +17,36 @@
 // ---------------------------------------------------------------------------
 
 const BLOCK_REQUESTS = [
-  // Ad networks and tracking endpoints. `domain` matches the host and any
-  // subdomain; `host` matches the exact host only; `path` matches any URL
-  // whose path contains the substring.
+  // `domain` matches the host and any subdomain (Adblock-style `||host^`
+  // anchor). `path` matches any URL whose path contains the substring.
+  //
+  // Ad networks / RTB / programmatic
   { kind: 'domain', value: 'appnexus.com' },
-  { kind: 'host',   value: 'log.medietall.no' },
-  { kind: 'domain', value: 'adsrvr.org' },
-  { kind: 'path',   value: '/pulse/' },
-  { kind: 'path',   value: '/api/pulse' }
+  { kind: 'domain', value: 'adnxs.com' },              // AppNexus' actual serving domain
+  { kind: 'domain', value: 'adsdk.microsoft.com' },    // Xandr / Microsoft Advertising SDK
+  { kind: 'domain', value: 'adsrvr.org' },             // The Trade Desk
+  { kind: 'domain', value: 'doubleclick.net' },        // Google ad serving (incl. securepubads.g.*)
+  { kind: 'domain', value: 'relevant-digital.com' },   // ad-tech (Schibsted partner)
+  { kind: 'domain', value: 'googletagmanager.com' },   // tag loader — its job is to load trackers
+
+  // Schibsted ad inventory + Pulse SDK (both legacy and current domains)
+  { kind: 'domain', value: 'inventory.schibsted.io' }, // ads.*, cogwheel.*
+  { kind: 'domain', value: 'pulse.schibsted.io' },     // Schibsted Pulse (legacy)
+  { kind: 'domain', value: 'pulse.m10s.io' },          // Schibsted Pulse (current — m10s = Marketing Services)
+
+  // Audience measurement
+  { kind: 'domain', value: 'log.medietall.no' },
+
+  // First-party-proxied cookie matching — publishers hiding ad-tech behind
+  // their own subdomain to evade content blockers.
+  { kind: 'domain', value: 'cm.vg.no' },
+  { kind: 'domain', value: 'cm.aftenposten.no' },
+  { kind: 'domain', value: 'cm.e24.no' },
+  { kind: 'domain', value: 'cm.bt.no' },
+
+  // Path fragments (match on any host)
+  { kind: 'path', value: '/pulse/' },
+  { kind: 'path', value: '/api/pulse' }
 ];
 
 const BLOCK_COOKIES = {
@@ -44,7 +66,9 @@ const BLOCK_COOKIES = {
     '_pulse',
     'pubconsent',
     'euconsent',
-    'adn'
+    'adn',
+    '__mbl',       // medietall audience measurement (seen on all five sites)
+    '_gcl_au'      // Google Ads conversion linker (seen on finn.no)
   ]
 };
 
@@ -75,14 +99,11 @@ function buildRules() {
 
   for (const r of BLOCK_REQUESTS) {
     const condition = { resourceTypes: ALL_RESOURCE_TYPES };
-    if (r.kind === 'domain' || r.kind === 'host') {
+    if (r.kind === 'domain') {
       // `||example.com^` is the Adblock-style anchor that
-      // declarativeNetRequest understands: matches the domain and (for
-      // `domain`) its subdomains, at any scheme.
+      // declarativeNetRequest understands: matches the domain and all its
+      // subdomains, at any scheme.
       condition.urlFilter = `||${r.value}^`;
-      if (r.kind === 'host') {
-        condition.requestDomains = [r.value];
-      }
     } else if (r.kind === 'path') {
       condition.urlFilter = r.value;
     } else {

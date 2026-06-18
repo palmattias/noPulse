@@ -14,10 +14,18 @@
     "*://*.aftenposten.no/*",
     "*://*.e24.no/*",
     "*://*.finn.no/*",
+    "*://*.bt.no/*",
     "*://*.bergens-tidende.no/*",
     "*://*.appnexus.com/*",
-    "*://log.medietall.no/*",
+    "*://*.adnxs.com/*",
     "*://*.adsrvr.org/*",
+    "*://*.doubleclick.net/*",
+    "*://*.relevant-digital.com/*",
+    "*://*.schibsted.io/*",
+    "*://*.m10s.io/*",
+    "*://log.medietall.no/*",
+    "*://adsdk.microsoft.com/*",
+    "*://www.googletagmanager.com/*",
     "*://sentry.vgnett.no/*"
   ],
   "background": {
@@ -30,6 +38,7 @@
         "*://*.aftenposten.no/*",
         "*://*.e24.no/*",
         "*://*.finn.no/*",
+        "*://*.bt.no/*",
         "*://*.bergens-tidende.no/*"
       ],
       "js": ["content.js"],

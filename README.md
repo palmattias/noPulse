@@ -12,22 +12,31 @@ The extension covers these sites and any of their subdomains:
 - `aftenposten.no`
 - `e24.no`
 - `finn.no`
-- `bergens-tidende.no`
+- `bt.no` (Bergens Tidende — `bergens-tidende.no` redirects here)
 
 It applies three layers of filtering:
 
-1. **Requests blocked outright.** Connections to known ad networks and
-   analytics pulse endpoints are dropped before they leave the browser.
+1. **Requests blocked outright.** Connections to ad networks, real-time
+   bidding endpoints, tag loaders, audience-measurement endpoints, and the
+   "first-party-proxied" cookie-matching subdomains some publishers use to
+   route ad-tech through their own hostname are dropped before they leave
+   the browser. The list was built from observing what actually fires when
+   the covered sites load — not from a generic blocklist — and includes the
+   Schibsted Pulse SDK on both its legacy (`pulse.schibsted.io`) and
+   current (`pulse.m10s.io`) domains.
 2. **Cookies denied.** A specific error-logging host is allowed to receive
    its requests so error monitoring keeps working, but the `Set-Cookie`
    response headers are stripped so it cannot identify the user across
-   sessions. A short list of tracking cookie names (`spid`, `SP_ID`,
-   `vguid`, `sdrn`, `pulse`, `_pulse`, `pubconsent`, `euconsent`, `adn`) is
-   blocked everywhere — in response headers, in JavaScript, and as a safety
-   net via the cookies API.
-3. **Functional hosts left alone.** CDNs, video players, and static asset
-   hosts (`*.akamaized.net`, `*.jwpcdn.com`, `*.gstatic.com`) are
-   explicitly not touched, so video, images, and fonts keep loading.
+   sessions. A list of tracking cookie names (`spid`, `SP_ID`, `vguid`,
+   `sdrn`, `pulse`, `_pulse`, `pubconsent`, `euconsent`, `adn`, `__mbl` for
+   the Norwegian audience measurement, `_gcl_au` for Google Ads conversion
+   linking) is blocked everywhere — in response headers, in JavaScript via
+   `document.cookie`, and as a safety net via the cookies API.
+3. **Functional hosts left alone.** CDNs, video players, static asset
+   hosts (`*.akamaized.net`, `*.jwpcdn.com`, `*.gstatic.com`), the consent
+   management platforms (`cmp.*` on each property), and the stock-quote
+   feed on E24 are explicitly not touched, so video, images, fonts, and
+   live data keep loading.
 
 ## Why
 
