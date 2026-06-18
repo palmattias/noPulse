@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "noPulse",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Blocks tracking and advertising on Norwegian news sites while keeping functional requests intact.",
   "minimum_chrome_version": "111",
   "permissions": [
@@ -47,6 +47,7 @@
         "*://*.bergens-tidende.no/*"
       ],
       "js": ["content.js"],
+      "css": ["consent.css"],
       "run_at": "document_start",
       "all_frames": true,
       "world": "MAIN"

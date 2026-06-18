@@ -16,7 +16,7 @@ The extension covers these sites and any of their subdomains:
 - `finn.no`
 - `bt.no` (Bergens Tidende — `bergens-tidende.no` redirects here)
 
-It applies three layers of filtering:
+It applies four layers of filtering:
 
 1. **Requests blocked outright.** Connections to ad networks, real-time
    bidding endpoints, tag loaders, audience-measurement endpoints, and the
@@ -34,7 +34,13 @@ It applies three layers of filtering:
    the Norwegian audience measurement, `_gcl_au` for Google Ads conversion
    linking) is blocked everywhere — in response headers, in JavaScript via
    `document.cookie`, and as a safety net via the cookies API.
-3. **Functional hosts left alone.** CDNs, video players, static asset
+3. **Consent-wall overlay hidden.** The Sourcepoint "Pay or OK" modal is
+   hidden via CSS so the article underneath becomes readable. The CMP
+   wrapper script keeps running, so `window.__tcfapi` still exists for
+   on-page code that calls into it — only the visible dialog is removed.
+   With the tracking endpoints in layer 1 already blocked, the wall has
+   nothing left to gate.
+4. **Functional hosts left alone.** CDNs, video players, static asset
    hosts (`*.akamaized.net`, `*.jwpcdn.com`, `*.gstatic.com`), the consent
    management platforms (`cmp.*` on each property), and the stock-quote
    feed on E24 are explicitly not touched, so video, images, fonts, and
@@ -55,6 +61,7 @@ noPulse/
 ├── manifest.json   Manifest V3 declaration
 ├── background.js   service worker; declares blocking + cookie rules
 ├── content.js      document.cookie override, runs at document_start
+├── consent.css     hides the Pay-or-OK overlay
 ├── logo.svg        project logo
 └── README.md
 ```

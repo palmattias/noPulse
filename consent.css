@@ -1,0 +1,27 @@
+/* ---------------------------------------------------------------------------
+ * noPulse — consent-wall overlay hider.
+ *
+ * The covered properties show a Sourcepoint "Pay or OK" modal on first visit:
+ * accept tracking for free, or pay to refuse. The tracking endpoints behind
+ * it are already blocked by background.js, so the wall has nothing left to
+ * gate — but the overlay itself still covers the article. These rules hide
+ * the overlay without removing the CMP wrapper script, so window.__tcfapi
+ * (which other on-page code calls into) keeps functioning.
+ *
+ * Selectors are intentionally narrow: Sourcepoint's container id is always
+ * `sp_message_container_<numeric>` and the dim layer is `.message-overlay`,
+ * so we don't risk hiding unrelated dialogs.
+ * ---------------------------------------------------------------------------*/
+
+div[id^="sp_message_container_"],
+div.message-overlay,
+div.sp_veil {
+  display: none !important;
+}
+
+/* Sourcepoint locks the body when the modal opens. Undo that. */
+html,
+body {
+  overflow: auto !important;
+  position: static !important;
+}
