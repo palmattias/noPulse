@@ -22,17 +22,31 @@ const BLOCK_REQUESTS = [
   //
   // Ad networks / RTB / programmatic
   { kind: 'domain', value: 'appnexus.com' },
-  { kind: 'domain', value: 'adnxs.com' },              // AppNexus' actual serving domain
+  { kind: 'domain', value: 'adnxs.com' },              // AppNexus' actual serving domain (VMAP/VAST for VGTV pre-rolls)
+  { kind: 'domain', value: 'adnxs-simple.com' },       // AppNexus video creative CDN (the pre-roll MP4s)
   { kind: 'domain', value: 'adsdk.microsoft.com' },    // Xandr / Microsoft Advertising SDK
   { kind: 'domain', value: 'adsrvr.org' },             // The Trade Desk
   { kind: 'domain', value: 'doubleclick.net' },        // Google ad serving (incl. securepubads.g.*)
   { kind: 'domain', value: 'relevant-digital.com' },   // ad-tech (Schibsted partner)
   { kind: 'domain', value: 'googletagmanager.com' },   // tag loader — its job is to load trackers
+  { kind: 'domain', value: 'glimr.io' },               // Nordic ad-targeting / contextual tracking
+  { kind: 'domain', value: 'brandmetrics.com' },       // video ad brand-lift measurement
 
-  // Schibsted ad inventory + Pulse SDK (both legacy and current domains)
+  // Schibsted ad inventory + Pulse SDK + analytics endpoints
+  // Note: schibsted.io hosts a lot of FUNCTIONAL APIs too (sportsnext, the
+  // VGTV collections API, privacy/CMP). Block only the specific tracker
+  // subdomains, not the whole schibsted.io / schibsted.com tree.
   { kind: 'domain', value: 'inventory.schibsted.io' }, // ads.*, cogwheel.*
   { kind: 'domain', value: 'pulse.schibsted.io' },     // Schibsted Pulse (legacy)
   { kind: 'domain', value: 'pulse.m10s.io' },          // Schibsted Pulse (current — m10s = Marketing Services)
+  { kind: 'domain', value: 'dc.schibsted.io' },        // Schibsted Data Collector
+  { kind: 'domain', value: 'hasher.schibsted.com' },   // identity hashing for ad-tech matching
+
+  // Video player analytics
+  // jwpltx.com is JWPlayer's telemetry, NOT the licence/entitlement check
+  // (that lives on entitlements.jwplayer.com, which stays allowed). If
+  // video ever stops playing, this is the first candidate to drop.
+  { kind: 'domain', value: 'jwpltx.com' },
 
   // Audience measurement
   { kind: 'domain', value: 'log.medietall.no' },
