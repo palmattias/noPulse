@@ -15,6 +15,7 @@ The extension covers these sites and any of their subdomains:
 - `e24.no`
 - `finn.no`
 - `bt.no` (Bergens Tidende — `bergens-tidende.no` redirects here)
+- `ta.no` (Telemarksavisa — Amedia, different ad stack from the others)
 
 It applies four layers of filtering:
 

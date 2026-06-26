@@ -48,6 +48,26 @@ const BLOCK_REQUESTS = [
   // video ever stops playing, this is the first candidate to drop.
   { kind: 'domain', value: 'jwpltx.com' },
 
+  // Amedia stack (covers ta.no and any other Amedia property)
+  { kind: 'domain', value: 'aid.no' },             // Amedia ID — central identifier
+  { kind: 'domain', value: 'adplogger.no' },       // Amedia ad-platform logger
+  { kind: 'domain', value: 'lwadm.com' },          // Kilkaya / Linkpulse ad management
+  { kind: 'domain', value: 'lwcdn.com' },          // Kilkaya / Linkpulse CDN
+  { kind: 'domain', value: 'k5a.io' },             // Kilkaya content analytics
+  { kind: 'domain', value: 'rubiconproject.com' }, // Magnite / Rubicon ad exchange
+  { kind: 'domain', value: 'adnuntius.com' },      // Nordic ad server
+  { kind: 'domain', value: 'adnami.io' },          // high-impact ads
+  { kind: 'domain', value: 'easy-ads.com' },       // ad-tech
+  { kind: 'domain', value: 'eacla.com' },          // ad-tech
+  // api.no and acdn.no host functional Amedia APIs too (services.api.no
+  // is auth, assets.acdn.no is static assets), so each tracker subdomain
+  // is named individually rather than blocking the whole tree.
+  { kind: 'domain', value: 'g.api.no' },
+  { kind: 'domain', value: 'r.api.no' },
+  { kind: 'domain', value: 'sp.api.no' },
+  { kind: 'domain', value: 'g.acdn.no' },
+  { kind: 'domain', value: 'r.acdn.no' },
+
   // Audience measurement
   { kind: 'domain', value: 'log.medietall.no' },
 
@@ -81,8 +101,11 @@ const BLOCK_COOKIES = {
     'pubconsent',
     'euconsent',
     'adn',
-    '__mbl',       // medietall audience measurement (seen on all five sites)
-    '_gcl_au'      // Google Ads conversion linker (seen on finn.no)
+    '__mbl',          // medietall audience measurement (Schibsted + Amedia)
+    '_gcl_au',        // Google Ads conversion linker (seen on finn.no)
+    'amedia:fpbid',   // Amedia first-party bidding ID
+    'amedia:visitid', // Amedia visit ID
+    '_k5a'            // Kilkaya content analytics
   ]
 };
 
